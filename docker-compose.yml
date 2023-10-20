@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: comentario
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  app:
+    image: registry.gitlab.com/comentario/comentario:v2.3.1
+    environment:
+      BASE_URL: http://localhost:8080/
+      ALLOW_NEW_OWNERS: "true"
+      SECRETS_FILE: "/secrets.yaml"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./secrets.yaml:/secrets.yaml:ro
